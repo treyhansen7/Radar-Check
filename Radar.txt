@@ -1,0 +1,19 @@
+<p><!DOCTYPE html> <html> <head>  <title>Car Animation</title>  <style>  body {  margin: 0;  overflow: hidden;  }</p>
+
+<p> canvas {  position: absolute;  top: 0;  left: 0;  width: 100%;  height: 100%;  }</p>
+
+<p> .radar {  position: absolute;  width: 100px;  height: 300px;  background: url('radar.png');  background-size: 100% 100%;  color: white;  text-align: center;  font-size: 36px;  line-height: 336px;  }  </style> </head> <body>  <canvas id=&quot;carCanvas&quot; width=&quot;800&quot; height=&quot;400&quot;></canvas>  <div class=&quot;radar&quot; style=&quot;top: 110px; right: 120px;&quot;>Speed: 0</div>  <div class=&quot;radar&quot; style=&quot;top: 260px; right: 120px;&quot;>Speed: 0</div>  <div class=&quot;radar&quot; style=&quot;top: 410px; right: 120px;&quot;>Speed: 0</div>  <div class=&quot;radar&quot; style=&quot;top: 560px; right: 120px;&quot;>Speed: 0</div>  <div class=&quot;radar&quot; style=&quot;top: 710px; right: 120px;&quot;>Speed: 0</div></p>
+
+<p> <script>  var canvas = document.getElementById(&quot;carCanvas&quot;);  var ctx = canvas.getContext(&quot;2d&quot;);  var background = new Image();  background.src = &quot;background.jpg&quot;;  var radars = document.querySelectorAll(&quot;.radar&quot;);  var cars = [];</p>
+
+<p> for (var i = 0; i < 5; i++) {  var car = {  img: new Image(),  x: Math.random() * canvas.width,  y: Math.random() * canvas.height,  speedX: Math.random() * 5 + 2, // Random speed in X direction  speedY: Math.random() * 5 + 2, // Random speed in Y direction  };  car.img.src = &quot;car&quot; + (i + 1) + &quot;.png&quot;;  cars.push(car);  }</p>
+
+<p> setInterval(moveCars, 100);</p>
+
+<p> function moveCars() {  cars.forEach(function(car) {  car.x += car.speedX;  car.y += car.speedY;  checkBoundary(car);  updateRadar(car);  });  updateScreen();  }</p>
+
+<p> function updateScreen() {  ctx.drawImage(background, 0, 0, canvas.width, canvas.height);  cars.forEach(function(car) {  ctx.drawImage(car.img, car.x, car.y);  });  }</p>
+
+<p> function checkBoundary(car) {  if (car.x < 0 || car.x > canvas.width - car.img.width) {  car.speedX *= -1; // Reverse speed in X direction  }  if (car.y < 0 || car.y > canvas.height - car.img.height) {  car.speedY *= -1; // Reverse speed in Y direction  }  }</p>
+
+<p> function updateRadar(car) {  radars.forEach(function(radar) {  if (car.x + car.img.width > canvas.width - 120) {  radar.innerHTML = &quot;Speed: &quot; + Math.sqrt(car.speedX ** 2 + car.speedY ** 2).toFixed(2);  radar.style.color = &quot;black&quot;;  }  });  }  </script> </body> </html></p>
